@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- BasicDataSource dataSource = new BasicDataSource 랑 동일 -->
+	<!-- DB Connection Poll define -->
+	<bean class="org.apache.commons.dbcp2.BasicDataSource" id = "dataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="micol"/>
+		<property name="password" value="1234"/>
+	
+	</bean>
+
+	<!-- Mybatis define -->
+	<bean class = "org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+		<!-- 의존성 주입 ref = bean 아이디-->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- classpath:  -> src/main/resources 폴더 -->
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+		<!-- classpath*: -> src/main/java 폴더 -->
+		<property name="mapperLocations" value="classpath*:co/micol/prj/**/service/*-map.xml"></property>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+		<constructor-arg ref="sqlSessionFactoryBean"/>
+	</bean>
+	
+	<!-- 마이바티스 스캔 -->
+	<mybatis-spring:scan base-package="co.micol.prj"/>
+
+</beans>
