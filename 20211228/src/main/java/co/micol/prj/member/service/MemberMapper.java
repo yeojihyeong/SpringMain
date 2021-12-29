@@ -12,5 +12,6 @@ public interface MemberMapper {
 	int memberUpdate(MemberVO member);
 	
 	boolean isIdCheck(String id);
+	//전달인자가 2개이상일 경우 파람을 각각사용해줘야함.
 	List<MemberVO> memberSearch(@Param("key") String key,@Param("data") String data);
 }

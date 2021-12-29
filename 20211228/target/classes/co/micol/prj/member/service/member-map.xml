@@ -20,7 +20,7 @@
 		parameterType="co.micol.prj.member.service.MemberVO">
 		INSERT INTO MEMBER(ID, PASSWORD, NAME, TEL, ADDRESS,
 		PICTURE, PFILE)
-		VALUE(#{id}, #{password}, #{name}, #{tel}, #{address}, #{picture}, #{pfile})
+		VALUES(#{id}, #{password}, #{name}, #{tel}, #{address}, #{picture}, #{pfile})
 	</insert>
 
 	<update id="memberUpdate"
@@ -42,16 +42,15 @@
 
 	<select id="isIdCheck" parameterType="String" resultType="boolean">
 		SELECT CASE WHEN COUNT(*) = 1 THEN 0 ELSE 1 END AS ID
-		WHERE ID = #{id}
+		FROM MEMBER WHERE ID = #{id}
 	</select>
 	
 	<select id="memberSearch" resultType="co.micol.prj.member.service.MemberVO">
 		SELECT * FROM MEMBER
-		WHERE
-		<if test="key == ''"> 1 = 1</if>
-		<if test="key == 'name'"> NAME LIKE '%'|| #{data} ||'%' </if>
-		<if test="key == 'tel'"> TEL LIKE '%'|| #{data} ||'%' </if>
-		<if test="key == 'address'"> ADDRESS LIKE '%'|| #{data} ||'%' </if>
+		<if test="key == ''"> WHERE 1 = 1</if>
+		<if test="key == 'name'"> WHERE NAME LIKE '%'|| #{data} ||'%' </if>
+		<if test="key == 'tel'"> WHERE TEL LIKE '%'|| #{data} ||'%' </if>
+		<if test="key == 'address'"> WHERE ADDRESS LIKE '%'|| #{data} ||'%' </if>
 	</select>
 
 

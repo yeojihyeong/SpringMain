@@ -16,15 +16,16 @@
 				<li><a class="active" href="home.do">Home</a></li>
 				<c:if test="${id eq null }">
 					<li><a href="memberLoginForm.do">Login</a></li>
+					<li><a href="memberInsertForm.do">Contact US</a></li>
 				</c:if>
 				<c:if test="${id ne null }">
 					<li><a href="memberLogout.do">LogOut</a></li>
 				</c:if>
-				<li><a href="#">Contact</a></li>
-				<li><a href="#">About</a></li>
+				
+				<li><a href="noticeSelectList.do">Notice</a></li>
 				<li><a href="#">Product</a></li>
 				
-				<c:if test="${(author eq 'admin') or (author eq 'ADMIN')}">
+				<c:if test="${author eq 'admin'}">
 				<li><a href="#">Service</a></li>
 				<li><a href="memberSelectList.do">Members</a></li>
 				</c:if>

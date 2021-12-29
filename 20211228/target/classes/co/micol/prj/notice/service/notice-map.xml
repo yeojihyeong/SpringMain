@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.prj.notice.service.NoticeMapper">
+<select id="noticeSelectList" resultType="co.micol.prj.notice.service.NoticeVO">
+	SELECT * FROM NOTICE ORDER BY ID DESC
+</select>
+
+<select id="noticeSelect" parameterType="co.micol.prj.notice.service.NoticeVO" resultType="co.micol.prj.notice.service.NoticeVO" >
+	SELECT * FROM NOTICE WHERE ID = #{id}
+</select>
+
+<insert id="noticeInsert" parameterType="co.micol.prj.notice.service.NoticeVO" >
+	<selectKey keyProperty="id" resultType="int" order="BEFORE">
+		SELECT NVL(MAX(ID)+1, 1) AS ID FROM NOTICE
+	</selectKey>
+	INSERT INTO NOTICE(ID, WRITERID, WRITERNAME, WRITEDATE, TITLE, SUBJECT, ATTACHE)
+	VALUES(#{id}, #{writerId}, #{writerName}, #{writeDate}, #{title}, #{subject}, #{attache})
+</insert>
+
+<delete id="noticeDelete" parameterType="co.micol.prj.notice.service.NoticeVO">
+	DELETE FROM NOTICE WHERE ID = #{id} 
+</delete>
+
+<update id="noticeUpdate" parameterType="co.micol.prj.notice.service.NoticeVO">
+	
+	UPDATE NOTICE
+		<if test="title != null">SET TITLE = #{title}</if>
+		<if test="subject != null">SET SUBJECT = #{subject}</if>
+		<if test="attache != null">SET ATTACHE = #{attache}</if>
+	WHERE ID = #{id} 
+</update>
+
+
+<update id="noticeHitUpdate" parameterType="int">
+	UPDATE NOTICE SET HIT = HIT+1 WHERE ID = #{id}
+</update>
+
+<update id="noticeIdUpdate" parameterType="int">
+	<![CDATA[
+		UPDATE NOTICE SET ID = ID - 1
+	 	WHERE ID > #{id}
+	 ]]>
+</update>
+
+<select id="noticeSearch" resultType="co.micol.prj.notice.service.NoticeVO">
+	SELECT * FROM NOTICE
+	WHERE
+		<if test="key == ''">1 = 1</if>
+		<if test="key == 'writerName'">WRITERNAME LIKE '%'||#{val}||'%'</if>
+		<if test="key == 'title'">TITLE LIKE '%'||#{val}||'%'</if>
+		<if test="key == 'subject'">SUBJECT LIKE '%'||#{val}||'%'</if>
+</select>
+
+
+
+</mapper>

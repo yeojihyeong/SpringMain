@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="resources/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div align="center">
@@ -50,25 +51,70 @@
 	</div>
 </div>
 <script type="text/javascript">
-	function eventKey(enterKey) {
-		if(enterKey==13){
+	function eventKey(keyCode) {
+		if(event.keyCode == 13){
  		searchData();			
 		}else{
 			return false;
 		}
 	}
-	function searchData() { 
+	
+	function searchData() {
 		$.ajax({
-			url : "ajaxSearchMember.do",
+			url : 'ajaxSearchMember.do',
 			type : "post", 
 			data : {"key" : $("#key option:selected").val(), "data" : $("#data").val()},
 			dataType: "json",
 			success : function(result) {
-				console.log(result); //수정필요
-				alert(result);
+				if(result.length > 0) {
+					htmlView(result);
+				}else{
+					alert("검색조건을 만족하는 데이터가 없습니다.");
+					$("#data").val('');
+				}
 			}
 		});
 	}
+	
+	 function htmlView(data) {
+		$('tbody').remove();
+		var tb = $("<tbody />");
+		$.each(data, function(index, item){
+			var row = $("<tr />").append(
+			$("<td align='center'> /").text(item.id),
+			$("<td align='center'> /").text(item.name),
+			$("<td align='center'> /").text(item.tel),
+			$("<td> /").text(item.address),
+			$("<td align='center'> /").text(item.author)
+		);			
+		tb.append(row);
+		});
+		$('table').append(tb);
+	} 
+	
+	/* function ajaxCall() {
+		const ajax = new XMLHttpRequest();  //ajax 객체 생성
+		const url = 'ajaxSearchMember.do'
+		ajax.onload = function(){ //콜백함수
+			if(ajax.status >= 200 && ajax.status <300){
+				successCallFunction(ajax.response); //성공했을때
+			}else{
+				failCallFunction(new Error(ajax.statusText)); //실패했을때
+			}
+		};
+		
+		ajax.onerror = failCallFunction;
+		ajax.open('POST'.url);
+		ajax.send();
+	}
+	
+	function successCallFunction(result) {
+		console.log(result)
+	}
+	
+	function failCallFunction(err){
+		console.log(err)
+	} */
 </script>
 </body>
 </html>
