@@ -26,7 +26,8 @@
 	
 	</update>
 	
-	<select id="isIdCheck">
-	
+	<select id="isIdCheck" parameterType="String" resultType="boolean">
+	SELECT CASE WHEN COUNT(*) = 1 THEN 0 ELSE 1 END AS ID
+	FROM MEMBER WHERE ID = #{id}
 	</select>
 </mapper>
