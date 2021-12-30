@@ -121,7 +121,8 @@
                   if(b != false){
                      alert("사용가능한 아이디 입니다!!!!!");
                      $("#idCheck").val("YES");
-                     $("#idCheck").hide();
+                     $("#idCheck").prop("disabled",true);
+                     /* $("#idCheck").hide(); */
                      $("#password").focus();   
          
                   }else{
